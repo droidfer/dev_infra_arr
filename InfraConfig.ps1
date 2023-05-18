@@ -7,6 +7,7 @@
 # $Env:RGName 
 # $Env:RLocation
 # $Env:AppServPlan
+# $Env:Deploy
 
 #####################################
 # Connect using an App Registration #
@@ -97,10 +98,16 @@ if (! (CheckResourceExist -ResourceName $SAName)) {
     Name = "$SAName"
     ResourceGroupName = "$RGName"
     Location = "$RLocation" 
-    SkuName = "Standard_LRS" 
     Kind = "StorageV2" 
-    AccessTier = "Hot" 
     PublicNetworkAccess = "Enabled"
+  }
+
+  if( $Env:Deploy == "Prod" ){
+    $Parameters.SkuName = "Premium_LRS"
+    $Parameters.AccessTier = "Hot"
+  }else{
+    $Parameters.SkuName = "Standard_LRS"
+    $Parameters.AccessTier = "Cool"
   }
 
   New-AzStorageAccount @Parameters
@@ -226,7 +233,14 @@ if (! (CheckResourceExist -ResourceName $SAN2ame)) {
     Name = "$SAN2ame"
     ResourceGroupName = "$RGName"
     Location = "$RLocation" 
-    SkuName = "Standard_LRS" 
+  }
+
+  if( $Env:Deploy == "Prod" ){
+    $Parameters.SkuName = "Premium_LRS"
+    $Parameters.AccessTier = "Hot"
+  }else{
+    $Parameters.SkuName = "Standard_LRS"
+    $Parameters.AccessTier = "Cool"
   }
 
   New-AzStorageAccount @Parameters
