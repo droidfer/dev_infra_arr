@@ -34,7 +34,12 @@ Connect-AzAccount -ServicePrincipal -TenantId $TenantId -Subscription $subscript
 $RGName = $Env:RGName
 $RLocation = $Env:RLocation
 
-New-AzResourceGroup -Name "$RGName" -Location "$RLocation"
+Get-AzureRmResourceGroup -Name $RGName -ErrorVariable notPresent -ErrorAction SilentlyContinue
+
+if (!($notPresent))
+{
+  New-AzResourceGroup -Name "$RGName" -Location "$RLocation"
+}
 
 
 ##############################
