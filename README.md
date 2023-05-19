@@ -8,7 +8,7 @@
 For the configuration, there are enviroment variables that needs to be set
 
 
-### InfraConfig1.pas1
+### InfraConfig1.ps1
 `   $Env:Tenant `
 
 `   $Env:SubId `
@@ -27,7 +27,7 @@ For the configuration, there are enviroment variables that needs to be set
 
 
 
-### InfraConfig1.pas2
+### InfraConfig1.ps2
 `   $Env:Tenant `
 
 `   $Env:SubId `
