@@ -3,9 +3,9 @@
 # $Env:SubId 
 # $Env:AppId 
 # $Env:AppPass
-# $Env:RGName 
-# $Env:RLocation
-# $Env:Deploy
+
+# Params
+param ($Deploy, $RGName, $RLocation)
 
 #####################################
 # Connect using an App Registration #
@@ -28,9 +28,6 @@ Connect-AzAccount -ServicePrincipal -TenantId $TenantId -Subscription $subscript
 #########################
 # ARM Template: https://learn.microsoft.com/en-us/azure/templates/microsoft.resources/resourcegroups?pivots=deployment-language-arm-template
 # Command: https://learn.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroup
-
-$RGName = $Env:RGName
-$RLocation = $Env:RLocation
 
 Get-AzureRmResourceGroup -Name $RGName -ErrorVariable notPresent -ErrorAction SilentlyContinue
 
@@ -74,7 +71,7 @@ function CheckResourceExist {
 # https://learn.microsoft.com/en-us/powershell/module/az.websites/new-azappserviceplan?view=azps-9.7.1
 
 $AppServ = "appServArroyo_dev"
-if( $Env:Deploy == "Prod" ){
+if( $Deploy == "Prod" ){
   $AppServ = "appServArroyo_prod"
 }
 
@@ -98,7 +95,7 @@ if (! (CheckResourceExist -ResourceName $AppServ)) {
 # Web Application
 # https://learn.microsoft.com/en-us/powershell/module/az.websites/new-azwebapp?view=azps-9.7.1
 $WebAppName = "webAppArroyo_dev"
-if( $Env:Deploy == "Prod" ){
+if( $Deploy == "Prod" ){
   $WebAppName = "webAppArroyo_prod"
 }
 
@@ -122,7 +119,7 @@ if (! (CheckResourceExist -ResourceName $WebAppName)) {
 # FunctionApp requires a Storage Account
 $SAName = "funAppStore_dev"
 $FunApp = "funcAppArroyo_dev"
-if( $Env:Deploy == "Prod" ){
+if( $Deploy == "Prod" ){
   $SAName = "funAppStore_prod"
   $FunApp = "funcAppArroyo_prod"
 }
@@ -136,7 +133,7 @@ if (! (CheckResourceExist -ResourceName $SAName)) {
     PublicNetworkAccess = "Enabled"
   }
 
-  if( $Env:Deploy == "Prod" ){
+  if( $Deploy == "Prod" ){
     $Parameters.SkuName = "Premium_LRS"
     $Parameters.AccessTier = "Hot"
   }else{

@@ -1,13 +1,11 @@
-
 # Environment Variable to be set: 
 # $Env:Tenant 
 # $Env:SubId 
 # $Env:AppId 
 # $Env:AppPass
-# $Env:RGName 
-# $Env:RLocation
-# $Env:AppServPlan
-# $Env:Deploy
+
+# Params
+param ($Deploy, $RGName, $RLocation)
 
 #####################################
 # Connect using an App Registration #
@@ -30,9 +28,6 @@ Connect-AzAccount -ServicePrincipal -TenantId $TenantId -Subscription $subscript
 #########################
 # ARM Template: https://learn.microsoft.com/en-us/azure/templates/microsoft.resources/resourcegroups?pivots=deployment-language-arm-template
 # Command: https://learn.microsoft.com/en-us/powershell/module/az.resources/new-azresourcegroup
-
-$RGName = $Env:RGName
-$RLocation = $Env:RLocation
 
 Get-AzureRmResourceGroup -Name $RGName -ErrorVariable notPresent -ErrorAction SilentlyContinue
 
@@ -83,7 +78,6 @@ if (! (CheckResourceExist -ResourceName $WebAppName)) {
     Name = $WebAppName
     ResourceGroupName = "$RGName"
     Location = "$RLocation"
-    AppServicePlan = "$Env:AppServPlan"
   }
 
   New-AzWebApp @Parameters
@@ -107,7 +101,7 @@ if (! (CheckResourceExist -ResourceName $SAName)) {
     PublicNetworkAccess = "Enabled"
   }
 
-  if( $Env:Deploy == "Prod" ){
+  if( $Deploy == "Prod" ){
     $Parameters.SkuName = "Premium_LRS"
     $Parameters.AccessTier = "Hot"
   }else{
@@ -240,7 +234,7 @@ if (! (CheckResourceExist -ResourceName $SAN2ame)) {
     Location = "$RLocation" 
   }
 
-  if( $Env:Deploy == "Prod" ){
+  if( $Deploy == "Prod" ){
     $Parameters.SkuName = "Premium_LRS"
     $Parameters.AccessTier = "Hot"
   }else{

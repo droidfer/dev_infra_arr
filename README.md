@@ -2,13 +2,12 @@
 
 ## Features
 - InfraConfig.ps1: This configures a infrastructure from zero
-- InfraConfig.ps2: Adds App Service Plan, App Service, Azure Function 
+- InfraConfig2.ps1: Adds App Service Plan, App Service, Azure Function 
 
 ## Configuration
-For the configuration, there are enviroment variables that needs to be set
+For the configuration, there are enviroment variables that needs to be set for the user lconnection
+The environment variables are thes
 
-
-### InfraConfig1.ps1
 `   $Env:Tenant `
 
 `   $Env:SubId `
@@ -17,27 +16,17 @@ For the configuration, there are enviroment variables that needs to be set
 
 `   $Env:AppPass `
 
-`   $Env:RGName `
 
-`   $Env:RLocation `
+### InfraConfig.ps1
+In order to configure the structure from zero (considering the environment variable above), the script requires the configuration of the Deploy (prod, dev) , Resource Group Name and Location of the resource
 
-`   $Env:AppServPlan `
+Example
 
-`   $Env:Deploy `
+`   .\InfraConfig.ps1 -Deploy prod -RGName resGroup -Location  `
 
+### InfraConfig2.ps1
+In order to configure the structure requirement (considering the environment variable above), the script requires the configuration of the Deploy (prod, dev) , Resource Group Name and Location of the resource
 
+Example
 
-### InfraConfig1.ps2
-`   $Env:Tenant `
-
-`   $Env:SubId `
-
-`   $Env:AppId `
-
-`   $Env:AppPass `
-
-`   $Env:RGName `
-
-`   $Env:RLocation `
-
-`   $Env:Deploy `
+`   .\InfraConfig2.ps1 -Deploy prod -RGName resGroup -Location  `
