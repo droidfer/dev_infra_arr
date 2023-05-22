@@ -71,8 +71,12 @@ function CheckResourceExist {
 # https://learn.microsoft.com/en-us/powershell/module/az.websites/new-azappserviceplan?view=azps-9.7.1
 
 $AppServ = "appServArroyo_dev"
+$ASTier = "Basic"
+$ASWork = "Small"
 if( $Deploy == "Prod" ){
   $AppServ = "appServArroyo_prod"
+  $ASTier = "Premium"
+  $ASWork = "Large"
 }
 
 if (! (CheckResourceExist -ResourceName $AppServ)) {
@@ -80,9 +84,9 @@ if (! (CheckResourceExist -ResourceName $AppServ)) {
     Name = $AppServ
     ResourceGroupName = "$RGName"
     Location = "$RLocation"
-    Tier = "Basic" 
+    Tier = $ASTier 
     NumberofWorkers = 2 
-    WorkerSize = "Small"
+    WorkerSize = $ASWork
   }
 
   New-AzAppServicePlan @Parameters
